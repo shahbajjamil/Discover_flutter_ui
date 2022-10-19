@@ -1,4 +1,5 @@
 import 'package:discover_flutter/model/animal_model.dart';
+import 'package:discover_flutter/screen/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -129,42 +130,53 @@ class AnimalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    return Stack(
-      children: [
-        Container(
-          width: double.infinity,
-          height: mediaQuery.size.width * 0.55,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-          decoration: BoxDecoration(
-            color: Colors.white24,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(5, 5)),
-            ],
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailsScreen(animal: animal)));
+      },
+      child: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            height: mediaQuery.size.width * 0.55,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+            decoration: BoxDecoration(
+              color: Colors.white24,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(5, 5)),
+              ],
+            ),
+            child: Row(
+              children: [
+                MapArea(color: animal.bgColor, location: animal.location),
+                const ButtonArea(),
+              ],
+            ),
           ),
-          child: Row(
-            children: [
-              MapArea(color: animal.bgColor, location: animal.location),
-              const ButtonArea(),
-            ],
+          Positioned(
+            top: 0,
+            bottom: 0,
+            right: 0,
+            child: Container(
+              width: mediaQuery.size.width * 0.5,
+              height: mediaQuery.size.width * 0.5,
+              child: Hero(
+                tag: animal.name,
+                child: FittedBox(
+                    fit: BoxFit.cover, child: Image.asset(animal.imageUrl)),
+              ),
+            ),
           ),
-        ),
-        Positioned(
-          top: 0,
-          bottom: 0,
-          right: 0,
-          child: Container(
-            width: mediaQuery.size.width * 0.5,
-            height: mediaQuery.size.width * 0.5,
-            child: FittedBox(
-                fit: BoxFit.cover, child: Image.asset(animal.imageUrl)),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
